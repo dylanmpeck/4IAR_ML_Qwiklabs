@@ -1,5 +1,5 @@
 # 4 In A Row ML
-A Unity ML-Agents Connect4-like Environment
+A Unity ML-Agents "4 In a Row" (Connect4) Environment
 
 For more info on ML-agents, [here are the docs.](https://github.com/Unity-Technologies/ml-agents/tree/master/docs)
 
