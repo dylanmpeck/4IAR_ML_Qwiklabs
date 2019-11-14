@@ -51,12 +51,12 @@ public class Board : MonoBehaviour
 				GameObject t;
 				//TODO do cleanly
 				for (int i = 0; i < (width * height / 2) + 1; i++) {
-					t = Instantiate(p1TokenPrefab, Vector3.one * 21, Quaternion.identity);
+					t = Instantiate(p1TokenPrefab, Vector3.zero, Quaternion.identity);
 					t.transform.parent = transform;
 					t.SetActive(false);
 					p1TokenPool.Add(t);
 
-					t = Instantiate(p2TokenPrefab, Vector3.one * 21, Quaternion.identity);
+					t = Instantiate(p2TokenPrefab, Vector3.zero, Quaternion.identity);
 					t.transform.parent = transform;
 					t.SetActive(false);
 					p2TokenPool.Add(t);

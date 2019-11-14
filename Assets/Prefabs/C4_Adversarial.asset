@@ -18,7 +18,7 @@ MonoBehaviour:
     vectorActionSize: 07000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - 
+    - Column to play
     vectorActionSpaceType: 0
   model: {fileID: 5022602860645237092, guid: b8cb83aaf0a62fc43840bc50a321d013, type: 3}
   inferenceDevice: 0

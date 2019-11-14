@@ -14,31 +14,31 @@ public class C4TrainingEnv : Academy
 	public Vector2 moduleOffsets;
 
 	//The list of all modules
-	List<C4AdversarialGame> trainingModules;
+	List<GameMaster> trainingModules;
 
 	//Create the grid of training modules on start
 	void Start()
     {
-		trainingModules = new List<C4AdversarialGame>();
+		trainingModules = new List<GameMaster>();
 		for (int y = 0; y < moduleGridSize.y; y++) {
 			for (int x = 0; x < moduleGridSize.x; x++) {
 				GameObject module = Instantiate(trainingModulePrefab, new Vector2(x * moduleOffsets.x, -y * moduleOffsets.y), Quaternion.identity);
 				module.transform.parent = transform;
-				trainingModules.Add(module.GetComponent<C4AdversarialGame>());
+				trainingModules.Add(module.GetComponent<GameMaster>());
 			}
 		}
 	}
 
 	//Reset all the modules on academy reset
 	public override void AcademyReset() {
-		foreach (C4AdversarialGame module in trainingModules) {
+		foreach (GameMaster module in trainingModules) {
 			module.ResetGame();
 		}
 	}
 
 	//Step in all the training modules on academy step
 	public override void AcademyStep() {
-		foreach (C4AdversarialGame module in trainingModules) {
+		foreach (GameMaster module in trainingModules) {
 			module.Step();
 		}
 	}

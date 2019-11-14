@@ -90,7 +90,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5616196204298285761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9a982610da3ea840b61ae1480ad018d, type: 3}
+  m_Script: {fileID: 11500000, guid: c96921020d9cf9841a65488f65a5460d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   brain: {fileID: 11400000, guid: 0e0334a79ec10ec4792038854a6ae2f2, type: 2}
@@ -102,7 +102,7 @@ MonoBehaviour:
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
   IsPlayer1: 1
-  gameMaster: {fileID: 1792727470955039781}
+  gameMaster: {fileID: 7128409905409048133}
 --- !u!1 &6016795088188736472
 GameObject:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4398678567964644365}
-  - component: {fileID: 1792727470955039781}
+  - component: {fileID: 7128409905409048133}
   m_Layer: 0
   m_Name: Adversarial Training Module
   m_TagString: Untagged
@@ -137,7 +137,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1792727470955039781
+--- !u!114 &7128409905409048133
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6016795088188736472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf172b9bc98c27e409969b79da64b290, type: 3}
+  m_Script: {fileID: 11500000, guid: 32cc593a4933c314eb2c3d92c1bc669d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   board: {fileID: 6444762896832960279}
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7336690035632611362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9a982610da3ea840b61ae1480ad018d, type: 3}
+  m_Script: {fileID: 11500000, guid: c96921020d9cf9841a65488f65a5460d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   brain: {fileID: 11400000, guid: 0e0334a79ec10ec4792038854a6ae2f2, type: 2}
@@ -204,4 +204,4 @@ MonoBehaviour:
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
   IsPlayer1: 0
-  gameMaster: {fileID: 1792727470955039781}
+  gameMaster: {fileID: 7128409905409048133}
