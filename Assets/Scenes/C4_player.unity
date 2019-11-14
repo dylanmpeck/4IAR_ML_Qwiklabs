@@ -219,7 +219,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.41531685, g: 0.44107062, b: 0.4811321, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -303,7 +303,7 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
-  humanStarts: 0
+  humanStarts: 1
   board: {fileID: 1975317661}
 --- !u!4 &1549914764
 Transform:
@@ -355,6 +355,7 @@ MonoBehaviour:
     type: 3}
   p2TokenPrefab: {fileID: 7733407386459596321, guid: fd707a8ffc006c64eb11148f43643c26,
     type: 3}
+  noGUI: 0
 --- !u!4 &1975317662
 Transform:
   m_ObjectHideFlags: 0

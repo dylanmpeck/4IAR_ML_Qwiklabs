@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7419446047699598776}
   - component: {fileID: 82981386914032983}
   m_Layer: 0
-  m_Name: P1
+  m_Name: P1Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,8 +68,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: -1411055362014452474, guid: 3b50282172bcd99468072b9bfc871eb2,
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 8893573645674440480, guid: af32a48c72133214a9d516aaa2565941,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

@@ -18,6 +18,11 @@ public class Board : MonoBehaviour
 
 	//A list of all the player token gameObjects being used
 	List<GameObject> tokens = new List<GameObject>();
+
+	//Token object pools to minimize creating and deleting memory on each play and board clear
+	List<GameObject> p1TokenPool = new List<GameObject>();
+	List<GameObject> p2TokenPool = new List<GameObject>();
+
 	//Has the board been initialized (Some ml-agents behavior happen on awake)
 	bool initialized = false;
 	//Player 1 == 1, Player 2 == -1, no token == 0
@@ -41,7 +46,23 @@ public class Board : MonoBehaviour
 					boardState[y, x] = 0;
 				}
 			}
-			initialized = true;
+			//Initalize token pool
+			if (!noGUI) {
+				GameObject t;
+				//TODO do cleanly
+				for (int i = 0; i < (width * height / 2) + 1; i++) {
+					t = Instantiate(p1TokenPrefab, Vector3.one * 21, Quaternion.identity);
+					t.transform.parent = transform;
+					t.SetActive(false);
+					p1TokenPool.Add(t);
+
+					t = Instantiate(p2TokenPrefab, Vector3.one * 21, Quaternion.identity);
+					t.transform.parent = transform;
+					t.SetActive(false);
+					p2TokenPool.Add(t);
+				}
+				initialized = true;
+			}
 		}
 	}
 
@@ -56,7 +77,7 @@ public class Board : MonoBehaviour
 		}
 		if (!noGUI) {
 			foreach (GameObject token in tokens) {
-				Destroy(token);
+				token.SetActive(false);
 			}
 			tokens.Clear();
 		}
@@ -74,8 +95,9 @@ public class Board : MonoBehaviour
 			if (boardState[y, col] == 0) {
 				boardState[y, col] = p1 ? 1 : -1;
 				if (!noGUI) {
-					GameObject token = Instantiate(p1 ? p1TokenPrefab : p2TokenPrefab, new Vector2(transform.position.x + col, transform.position.y - ((height - 1) - y)), Quaternion.identity);
-					token.transform.parent = transform;
+					GameObject token = GetTokenFromPool(p1 ? p1TokenPool : p2TokenPool);
+					token.transform.position = new Vector2(transform.position.x + col, transform.position.y - ((height - 1) - y));
+					token.SetActive(true);
 					tokens.Add(token);
 				}
 				return true;
@@ -83,6 +105,16 @@ public class Board : MonoBehaviour
 		}
 		//Debug.LogError("Column " + col.ToString() + " is full!");
 		return false;
+	}
+
+	//Get an available token from the token pool
+	public GameObject GetTokenFromPool(List<GameObject> pool) {
+		foreach (GameObject go in pool) {
+			if (!go.activeSelf) {
+				return go;
+			}
+		}
+		return null;
 	}
 
 	//Checks for a connect 4 in the board state (can be optimized)
@@ -104,7 +136,7 @@ public class Board : MonoBehaviour
 
 	//Check for a horizontal connect 4 at pos (x, y) with player number p
 	bool CheckH(int x, int y, int p) {
-		if (x < width - 4) {
+		if (x <= width - 4) {
 			if (boardState[y, x + 1] == p && boardState[y, x + 2] == p && boardState[y, x + 3] == p) {
 				return true;
 			}
@@ -114,7 +146,7 @@ public class Board : MonoBehaviour
 
 	//Check for a vertical connect 4 at pos (x, y) with player number p
 	bool CheckV(int x, int y, int p) {
-		if (y < height - 4) {
+		if (y <= height - 4) {
 			if (boardState[y + 1, x] == p && boardState[y + 2, x] == p && boardState[y + 3, x] == p) {
 				return true;
 			}
@@ -124,7 +156,7 @@ public class Board : MonoBehaviour
 
 	//Check for a diagonal upwards connect 4 at pos (x, y) with player number p
 	bool CheckDU(int x, int y, int p) {
-		if (x < width - 4 && y < height - 4) {
+		if (x <= width - 4 && y <= height - 4) {
 			if (boardState[y + 1, x + 1] == p && boardState[y + 2, x + 2] == p && boardState[y + 3, x + 3] == p) {
 				return true;
 			}
@@ -134,7 +166,7 @@ public class Board : MonoBehaviour
 
 	//Check for a diagonal downwards connect 4 at pos (x, y) with player number p
 	bool CheckDD(int x, int y, int p) {
-		if (x < width - 4 && y >= 3) {
+		if (x <= width - 4 && y >= 3) {
 			if (boardState[y - 1, x + 1] == p && boardState[y - 2, x + 2] == p && boardState[y - 3, x + 3] == p) {
 				return true;
 			}
@@ -195,6 +227,14 @@ public class Board : MonoBehaviour
 		}
 
 		return bs;
+	}
+
+	public bool SetBoardState(int[,] bs) {
+		if (bs.GetLength(0) == height && bs.GetLength(1) == width) {
+			boardState = bs;
+			return true;
+		}
+		return false;
 	}
 }
 
