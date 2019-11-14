@@ -19,9 +19,9 @@ public class C4AdversarialGame : MonoBehaviour
 	public void Step() {
 		p1Turn = !p1Turn;
 		if (p1Turn) {
-			P1.PlayTurn();
+			P1.PlayTurn(true);
 		} else {
-			P2.PlayTurn();
+			P2.PlayTurn(false);
 		}
 	}
 

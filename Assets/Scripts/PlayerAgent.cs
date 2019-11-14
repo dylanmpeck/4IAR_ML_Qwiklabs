@@ -6,7 +6,7 @@ public class PlayerAgent : C4Agent
 {
 	bool playing = false;
 
-	public override void PlayTurn() {
+	public override void PlayTurn(bool p1) {
 		playing = true;
 	}
 
