@@ -49,7 +49,7 @@ MonoBehaviour:
     type: 3}
   p2TokenPrefab: {fileID: 7733407386459596321, guid: fd707a8ffc006c64eb11148f43643c26,
     type: 3}
-  noGUI: 1
+  noGUI: 0
 --- !u!1 &5616196204298285761
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +101,6 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
-  IsPlayer1: 1
   gameMaster: {fileID: 7128409905409048133}
 --- !u!1 &6016795088188736472
 GameObject:
@@ -203,5 +202,4 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 1
     numberOfActionsBetweenDecisions: 1
-  IsPlayer1: 0
   gameMaster: {fileID: 7128409905409048133}
