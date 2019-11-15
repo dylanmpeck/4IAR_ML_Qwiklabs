@@ -23,10 +23,18 @@ public class Board : MonoBehaviour
 	List<GameObject> p1TokenPool = new List<GameObject>();
 	List<GameObject> p2TokenPool = new List<GameObject>();
 
+    //Positions above each respective column where dropping piece will start.
+    List<Vector2> placementPositions = new List<Vector2>();
+
 	//Has the board been initialized (Some ml-agents behavior happen on awake)
 	bool initialized = false;
 	//Player 1 == 1, Player 2 == -1, no token == 0
 	int[,] boardState;
+
+    GameObject currentToken;
+    bool currentTokenActivated;
+
+    public bool successfullyPlaced;
 
 	//Initialize on start
 	void Start() {
@@ -41,7 +49,8 @@ public class Board : MonoBehaviour
 				for (int x = 0; x < width; x++) {
 					if (!noGUI) {
 						GameObject cell = Instantiate(gridCellPrefab, new Vector2(transform.position.x + x, transform.position.y - y), Quaternion.identity);
-						cell.transform.parent = transform;
+                        if (y == height / 2) createColumnTriggersForMouse(cell, x);
+                        cell.transform.parent = transform;
 					}
 					boardState[y, x] = 0;
 				}
@@ -63,6 +72,10 @@ public class Board : MonoBehaviour
 				}
 				initialized = true;
 			}
+
+            //Initialize placement positions for each column.
+            if (!noGUI)
+                initializePlacementPositions();
 		}
 	}
 
@@ -83,32 +96,76 @@ public class Board : MonoBehaviour
 		}
 	}
 
+    void initializePlacementPositions()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            placementPositions.Add(new Vector2(transform.position.x + x, transform.position.y + 1));
+        }
+    }
+
 	//Place a token into a given column.
 	//Return false if the column is not valid, or if the column is full (any invalid move)
     public bool Play(int col, bool p1) {
-		if (col < 0 || col >= width) {
-			Debug.LogError("Not a valid column!");
-			return false;
-		}
+        if (col < 0 || col >= width)
+        {
+            Debug.LogError("Not a valid column!");
+            return false;
+        }
 
-		for (int y = 0; y < height; y++) {
-			if (boardState[y, col] == 0) {
-				boardState[y, col] = p1 ? 1 : -1;
-				if (!noGUI) {
-					GameObject token = GetTokenFromPool(p1 ? p1TokenPool : p2TokenPool);
-					token.transform.position = new Vector2(transform.position.x + col, transform.position.y - ((height - 1) - y));
-					token.SetActive(true);
-					tokens.Add(token);
-				}
-				return true;
-			}
-		}
-		//Debug.LogError("Column " + col.ToString() + " is full!");
-		return false;
-	}
+        for (int y = 0; y < height; y++)
+        {
+            if (boardState[y, col] == 0)
+            {
+                boardState[y, col] = p1 ? 1 : -1;
+                if (!noGUI)
+                {
+                    //GameObject token = Instantiate(p1 ? p1TokenPrefab : p2TokenPrefab, new Vector2(transform.position.x + col, transform.position.y - ((height - 1) - y)), Quaternion.identity);
+                    if (!currentTokenActivated) activateToken(p1);
+                    setTokenAboveColumn(p1, col);
+                    StartCoroutine(dropPiece(currentToken, y, col));
+                    //token.transform.parent = transform;
+                    //tokens.Add(token);
+                }
+                return true;
+            }
+        }
+        //Debug.LogError("Column " + col.ToString() + " is full!");
+        return false;
+    }
 
-	//Get an available token from the token pool
-	public GameObject GetTokenFromPool(List<GameObject> pool) {
+    IEnumerator dropPiece(GameObject token, int y, int col)
+    {
+        Vector3 startPos = token.transform.position;
+        Vector3 endPos = startPos;
+        endPos.y -= height - y;
+
+        GameObject placedPiece = Instantiate(token, startPos, Quaternion.identity);
+        placedPiece.SetActive(true);
+        placedPiece.transform.parent = transform;
+        tokens.Add(placedPiece);
+
+        token.SetActive(false);
+
+        float vel = 0.0f;
+
+        while (Mathf.Approximately(placedPiece.transform.position.y, endPos.y) == false)
+        {
+            vel += -42f * Time.deltaTime;
+            placedPiece.transform.Translate(new Vector3(0, vel * Time.deltaTime, 0));
+            if (placedPiece.transform.position.y < endPos.y)
+            {
+                placedPiece.transform.position = endPos;
+            }
+            yield return null;
+        }
+
+        currentTokenActivated = false;
+        successfullyPlaced = true;
+    }
+
+    //Get an available token from the token pool
+    public GameObject GetTokenFromPool(List<GameObject> pool) {
 		foreach (GameObject go in pool) {
 			if (!go.activeSelf) {
 				return go;
@@ -236,5 +293,41 @@ public class Board : MonoBehaviour
 		}
 		return false;
 	}
+
+    //Creates box triggers over each column in order to check which column the mouse is hovered over when placing
+    void createColumnTriggersForMouse(GameObject cell, int col)
+    {
+        GameObject columnCollider = new GameObject("columnCollider" + col);
+        Vector3 centerOfColumn = cell.transform.position;
+        centerOfColumn.x += 0.5f;
+        columnCollider.transform.position = centerOfColumn;
+        columnCollider.transform.rotation = Quaternion.identity;
+        columnCollider.transform.parent = transform;
+        BoxCollider2D bc = columnCollider.AddComponent<BoxCollider2D>();
+        bc.isTrigger = true;
+        bc.size = new Vector2(bc.size.x, height);
+    }
+
+    void activateToken(bool p1)
+    {
+        currentToken = GetTokenFromPool(p1 ? p1TokenPool : p2TokenPool);
+        currentTokenActivated = true;
+    }
+
+    public void setTokenAboveColumn(bool p1, int col)
+    {
+        if (!currentTokenActivated)
+            activateToken(p1);
+
+        currentToken.transform.position = placementPositions[col];
+    }
+
+    public void setTokenToMousePos(bool p1, Vector3 position)
+    {
+        if (!currentTokenActivated)
+            activateToken(p1);
+
+        currentToken.transform.position = position;
+    }
 }
 
