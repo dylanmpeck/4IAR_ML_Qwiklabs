@@ -21,12 +21,11 @@ public class AIAgent : C4Agent
 	public override void AgentAction(float[] vectorAction, string textAction) {
 		int colToPlay = Mathf.FloorToInt(vectorAction[0]);
 		if (!gameMaster.board.Play(colToPlay, isPlayer1)) {
-			//if the agent tries to play an invalid move, double lose 'cause bad.
-			SetReward(-500f);
-			gameMaster.ResetGame();
+			//if the agent tries to play an invalid move, end turn with forfeit code
+			gameMaster.EndTurn(2);
 		} else {
 			//We need to check for gameover here as agent action is called as an async method
-			gameMaster.CheckForGameOver();
+			gameMaster.EndTurn(0);
 		}
 	}
 }

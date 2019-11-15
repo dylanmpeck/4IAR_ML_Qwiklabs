@@ -22,9 +22,11 @@ public class C4TrainingEnv : Academy
 		trainingModules = new List<GameMaster>();
 		for (int y = 0; y < moduleGridSize.y; y++) {
 			for (int x = 0; x < moduleGridSize.x; x++) {
-				GameObject module = Instantiate(trainingModulePrefab, new Vector2(x * moduleOffsets.x, -y * moduleOffsets.y), Quaternion.identity);
-				module.transform.parent = transform;
-				trainingModules.Add(module.GetComponent<GameMaster>());
+				GameObject moduleObj = Instantiate(trainingModulePrefab, new Vector2(x * moduleOffsets.x, -y * moduleOffsets.y), Quaternion.identity);
+				moduleObj.transform.parent = transform;
+				GameMaster module = moduleObj.GetComponent<GameMaster>();
+				module.trainingMode = true;
+				trainingModules.Add(module);
 			}
 		}
 	}
