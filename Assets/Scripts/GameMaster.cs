@@ -11,6 +11,7 @@ public class GameMaster : MonoBehaviour
 	//training mode enables control by the academy (through the step function)
 	[HideInInspector]
 	public bool trainingMode = false;
+    public float timeBetweenMoves = 0f;
 
 	//reward amount on win or loss (loss is negative)
 	int reward = 50;
@@ -20,7 +21,7 @@ public class GameMaster : MonoBehaviour
 	bool p1Turn = true;
 	bool p1TurnLastTick = false;
 
-	void Awake() {
+	void Start() {
 		ResetGame();
 	}
 
@@ -37,15 +38,12 @@ public class GameMaster : MonoBehaviour
 		}
 	}
 
-	//on step, make the agent who's turn it is play
-	public void Step() {
+    //on step, make the agent who's turn it is play
+    public void Step() {
 		if (gameOver) {
 			ResetGame();
 		}
 		(p1Turn ? P1 : P2).PlayTurn(p1Turn);
-		if (p1Turn == p1TurnLastTick) {
-			Debug.LogError("Steps are out of order!");
-		}
 		p1TurnLastTick = p1Turn;
 	}
 
@@ -69,7 +67,7 @@ public class GameMaster : MonoBehaviour
 				SetGameOver();
 				//Debug.Log("Draw!");
 			} else {
-				p1Turn = !p1Turn;
+                StartCoroutine(NextMoveIn(timeBetweenMoves));
 			}
 		} else if (statusCode == 1) {
 			Debug.LogError("Player " + (p1Turn ? "1" : "2") + " experienced an error.");
@@ -81,7 +79,13 @@ public class GameMaster : MonoBehaviour
 		}
 	}
 
-	public void SetGameOver() {
+    IEnumerator NextMoveIn(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        p1Turn = !p1Turn;
+    }
+
+    public void SetGameOver() {
 		gameOver = true;
 	}
 

@@ -14,19 +14,25 @@ public class PlayerAgent : C4Agent
 
 	void Update() {
 		if (playing) {
-            int col = getMouseOverColumn();
+            Vector3 mouseWorldPos = GetMouseWorldPosition();
+            int col = GetMouseOverColumn(mouseWorldPos);
             if (col == -1)
-                gameMaster.board.setTokenToMousePos(IsPlayer1, getMouseWorldPosition());
-            else
-                gameMaster.board.setTokenAboveColumn(IsPlayer1, col);
-
-            if (Input.GetMouseButtonDown(0))
             {
-                if (gameMaster.board.Play(col, IsPlayer1))
+                gameMaster.board.SetTokenToMousePos(IsPlayer1, mouseWorldPos);
+            }
+            else
+            {
+                gameMaster.board.SetTokenAboveColumn(IsPlayer1, col);
+                if (Input.GetMouseButtonDown(0))
                 {
-                    EndTurn();
+                    if (gameMaster.board.Play(col, IsPlayer1))
+                    {
+                        EndTurn();
+                    }
                 }
             }
+
+            
 
            // if (gameMaster.board.successfullyPlaced)
              //   EndTurn();
@@ -44,17 +50,15 @@ public class PlayerAgent : C4Agent
         gameMaster.EndTurn(0);
     }
 
-    int getMouseOverColumn()
+    int GetMouseOverColumn(Vector3 mouseWorldPos)
     {
-        Ray mouseRay;
-        RaycastHit mouseHit;
-
-        mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mouseRay, out mouseHit))
+        mouseWorldPos.z = -1;
+        RaycastHit2D hit = Physics2D.Raycast(mouseWorldPos, Vector3.forward);
+        if (hit.collider != null)
         {
-            if (mouseHit.collider.name.Contains("columnCollider"))
+            if (hit.collider.tag == "ColumnCollider")
             {
-                return (mouseHit.collider.name[14] - '0');
+                return (hit.collider.name[3] - '0');
             }
             else
             {
@@ -64,7 +68,7 @@ public class PlayerAgent : C4Agent
         return (-1);
     }
 
-    Vector3 getMouseWorldPosition()
+    Vector3 GetMouseWorldPosition()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }

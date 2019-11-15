@@ -155,6 +155,7 @@ MonoBehaviour:
     m_BrainsToControl:
     - {fileID: 0}
     - {fileID: 0}
+    - {fileID: 11400000, guid: 0e0334a79ec10ec4792038854a6ae2f2, type: 2}
   m_TrainingConfiguration:
     width: 320
     height: 210
