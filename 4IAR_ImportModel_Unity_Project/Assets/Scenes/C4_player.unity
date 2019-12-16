@@ -155,7 +155,7 @@ MonoBehaviour:
   m_TrainingConfiguration:
     width: 80
     height: 80
-    qualityLevel: 1
+    qualityLevel: 5
     timeScale: 100
     targetFrameRate: -1
   m_InferenceConfiguration:
@@ -353,6 +353,7 @@ MonoBehaviour:
   p2TokenPrefab: {fileID: 7733407386459596321, guid: fd707a8ffc006c64eb11148f43643c26,
     type: 3}
   noGUI: 0
+  noAnimations: 0
   successfullyPlaced: 0
 --- !u!4 &1975317662
 Transform:

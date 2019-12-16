@@ -49,7 +49,8 @@ MonoBehaviour:
     type: 3}
   p2TokenPrefab: {fileID: 7733407386459596321, guid: fd707a8ffc006c64eb11148f43643c26,
     type: 3}
-  noGUI: 1
+  noGUI: 0
+  noAnimations: 1
   successfullyPlaced: 0
 --- !u!1 &5616196204298285761
 GameObject:
