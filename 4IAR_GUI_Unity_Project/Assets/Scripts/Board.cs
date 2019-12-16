@@ -16,6 +16,9 @@ public class Board : MonoBehaviour
 	//If NoGUI is true, the graphics for the board will not be initialized (Saves memory from gameObjects being created)
 	public bool noGUI = false;
 
+    //If NoAnimations is true, pieces will immediately reach destination
+    public bool noAnimations = false;
+
 	//A list of all the player token gameObjects being used
 	List<GameObject> tokens = new List<GameObject>();
 
@@ -106,7 +109,10 @@ public class Board : MonoBehaviour
                 {
                     GameObject t = ActiveToken(p1);
                     currentToken = null;
-                    StartCoroutine(dropPiece(t, y, col));
+                    if (!noAnimations)
+                        StartCoroutine(dropPiece(t, y, col));
+                    else
+                        t.transform.position = new Vector2(transform.position.x + col, transform.position.y - ((height - 1) - y));                
                 }
                 return true;
             }

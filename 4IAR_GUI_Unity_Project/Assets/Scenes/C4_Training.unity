@@ -159,8 +159,8 @@ MonoBehaviour:
   m_TrainingConfiguration:
     width: 320
     height: 210
-    qualityLevel: 0
-    timeScale: 100
+    qualityLevel: 1
+    timeScale: 1
     targetFrameRate: -1
   m_InferenceConfiguration:
     width: 1280
@@ -172,7 +172,7 @@ MonoBehaviour:
     m_ResetParameters: []
   trainingModulePrefab: {fileID: 6016795088188736472, guid: 4a3c826cd64dbbf40a058f303c872b01,
     type: 3}
-  moduleGridSize: {x: 10, y: 5}
+  moduleGridSize: {x: 3, y: 1}
   moduleOffsets: {x: 8, y: 7}
 --- !u!4 &1604771490
 Transform:
