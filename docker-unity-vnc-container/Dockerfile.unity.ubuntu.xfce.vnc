@@ -67,7 +67,6 @@ RUN ["chmod", "+x", "UnityHub.AppImage"]
 RUN ./UnityHub.AppImage --appimage-extract
 
 ### Place Unity Hub files in same location as Qwiklabs calls them. Could be renamed to something better.
-RUN mkdir -p /headless/Downloads/squashfs-root
 RUN mv squashfs-root /headless/Downloads/squashfs-root
 
 ### Install Monodevelop to use as editor for Unity
